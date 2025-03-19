@@ -7,6 +7,8 @@ import com.babelgroup.helloworld.ejercicioLogs.iomanagers.IOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 
 public class JugadorServiceImpl implements JugadorService {
 
@@ -53,7 +55,7 @@ public class JugadorServiceImpl implements JugadorService {
         return this.sorteo.getJugadores();
     }
 
-    public Jugador selectJugador(String nombre) {
+    public Jugador seleccionarJugador(String nombre) {
         for (Jugador jugador : this.getAllJugadores()) {
             if (jugador.getNombre().equals(nombre)) {
                 this.logger.info("Jugador " + jugador.getNombre() + " seleccionado");
