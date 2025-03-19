@@ -8,22 +8,22 @@ import java.util.List;
 public class Jugador {
 
     String name;
-    List<List<Apuesta>> apuestas;
+    List<Apuesta> apuestas;
 
-    public Jugador(String name, List<List<Apuesta>> apuestas) {
+    public Jugador(String name, List<Apuesta> apuestas) {
         this.name = name;
         this.apuestas = apuestas;
     }
 
-    public void addApuesta(List<Apuesta> apuestas) {
+    public void addApuesta(Apuesta apuestas) {
         this.apuestas.add(apuestas);
     }
 
-    public String getName() {
+    public String getNombre() {
         return this.name;
     }
 
-    public List<List<Apuesta>> getApuestas() {
+    public List<Apuesta> getApuestas() {
         return apuestas;
     }
 }

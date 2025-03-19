@@ -8,6 +8,4 @@ public interface ISorteo {
 
     public void addJugador(IJugador jugador);
 
-    public void addApuesta(IJugador jugador, IApuesta apuesta);
-
 }
