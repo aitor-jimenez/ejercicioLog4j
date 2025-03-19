@@ -4,47 +4,48 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 @Component
 public class Sorteo implements ISorteo {
 
-    Map<IJugador, List<IApuesta>> sorteo;
+    List<IJugador> sorteo;
+    Random rnd;
 
-    public Sorteo(Map<IJugador, List<IApuesta>> sorteo) {
+    public Sorteo(List<IJugador> sorteo) {
         this.sorteo = sorteo;
+        rnd = new Random();
     }
 
     public List<IJugador> makeSorteo() {
-        List<IJugador> winners = new ArrayList<>();
-        List<Integer> winnerNumbers = genWinnerNumbers(6);
-        for (IJugador jugador : sorteo.keySet()) {
-            List<IApuesta> apuestasJugador = sorteo.get(jugador);
-            if (apuestasJugador.equals(winnerNumbers)) {
-                winners.add(jugador);
-            }
-        }
-        return winners;
+        IApuesta apuestaGanadora = getApuestaGanadora();
+
+        return getAllGanadores(apuestaGanadora);
     }
 
     public void addJugador(IJugador jugador) {
-        sorteo.put(jugador, null);
+        sorteo.add(jugador);
     }
 
-    public void addApuesta(IJugador jugador, IApuesta apuesta) {
-        List<IApuesta> apuestas = sorteo.get(jugador);
-        if (apuestas == null) {
-            apuestas = new ArrayList<>();
-        }
-        apuestas.add(apuesta);
-        sorteo.put(jugador, apuestas);
+    private IApuesta getApuestaGanadora() {
+        IApuesta winnerNumbers;
+        int rnd1 = rnd.nextInt(sorteo.size());
+        IJugador firstRandParam = sorteo.get(rnd1);
+        int rnd2 = rnd.nextInt(firstRandParam.getApuestas().size());
+
+        return firstRandParam.getApuestas().get(rnd2);
     }
 
-    private List<Integer> genWinnerNumbers(int size) {
-        List<Integer> winnerNumbers = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            winnerNumbers.add((int) (Math.random() * 49));
+    private List<IJugador> getAllGanadores(IApuesta apuestaGanadora) {
+        List<IJugador> ganadores = new ArrayList<>();
+        for (IJugador jugador : sorteo) {
+            for (IApuesta apuestas : jugador.getApuestas()) {
+                if (apuestas.equals(apuestaGanadora)) {
+                    ganadores.add(jugador);
+                }
+            }
         }
-        return winnerNumbers;
+
+        return ganadores;
     }
 }
