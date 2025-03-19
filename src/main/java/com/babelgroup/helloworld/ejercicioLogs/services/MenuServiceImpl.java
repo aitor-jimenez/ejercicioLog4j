@@ -1,4 +1,4 @@
-package com.babelgroup.helloworld.ejercicioLogs.servicies;
+package com.babelgroup.helloworld.ejercicioLogs.services;
 
 import com.babelgroup.helloworld.ejercicioLogs.iomanagers.IOManager;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.babelgroup.helloworld.ejercicioLogs;
 
-import com.babelgroup.helloworld.ejercicioLogs.servicies.MenuService;
+import com.babelgroup.helloworld.ejercicioLogs.services.MenuService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
