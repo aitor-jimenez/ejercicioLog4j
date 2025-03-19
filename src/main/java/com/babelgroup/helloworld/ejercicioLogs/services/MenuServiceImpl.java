@@ -87,7 +87,10 @@ public class MenuServiceImpl implements MenuService {
 
         mostrarJugadores(jugadores);
 
-        Jugador jugadorSeleccionado = jugadorService.seleccionarJugador();
+        ioManager.write("Introduce el nombre del jugador:");
+        String nombreJugador = ioManager.read();
+
+        Jugador jugadorSeleccionado = jugadorService.seleccionarJugador(nombreJugador);
         if (jugadorSeleccionado == null) {
             ioManager.write("Jugador no seleccionado o no válido.");
             return;
@@ -99,8 +102,8 @@ public class MenuServiceImpl implements MenuService {
             return;
         }
 
-        boolean added = jugadorService.addApuestaToJugador(jugadorSeleccionado, nuevaApuesta);
-        if (added) {
+        jugadorService.añadirApuesta(jugadorSeleccionado, nuevaApuesta);
+        if (jugadorSeleccionado.getApuestas().contains(nuevaApuesta)) {
             ioManager.write("Apuesta añadida correctamente al jugador " + jugadorSeleccionado.getNombre());
         } else {
             ioManager.write("Esta apuesta ya existía para el jugador o no se pudo añadir.");
@@ -124,7 +127,6 @@ public class MenuServiceImpl implements MenuService {
             case "a" -> {
                 logger.info("El usuario ha seleccionado la opción: Apuesta manual");
                 return apuestaService.makeApuesta();
-                // Este método pedirá por consola 6 números y creará el objeto Apuesta
             }
             case "b" -> {
                 logger.info("El usuario ha seleccionado la opción: Apuesta aleatoria");

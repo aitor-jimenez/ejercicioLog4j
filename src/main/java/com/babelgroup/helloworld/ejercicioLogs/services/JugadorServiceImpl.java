@@ -16,7 +16,7 @@ public class JugadorServiceImpl implements JugadorService {
     private Sorteo sorteo;
     private static final Logger logger = LoggerFactory.getLogger(ApuestasServiceImpl.class);
 
-    public JugadorServiceImpl(Sorteo sorteo) {
+    public JugadorServiceImpl(IOManager ioManager, Sorteo sorteo) {
         this.ioManager = ioManager;
         this.sorteo = sorteo;
     }

@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface JugadorService {
     public Jugador crearJugador();
+
     public void añadirApuesta(Jugador jugador, Apuesta apuesta);
+
     public void mostrarApuestas();
+
     public List<Jugador> getAllJugadores();
-    public Jugador selectJugador(String nombre);
+
+    public Jugador seleccionarJugador(String nombre);
 }
