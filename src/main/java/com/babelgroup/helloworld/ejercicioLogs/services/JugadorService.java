@@ -1,18 +1,16 @@
 package com.babelgroup.helloworld.ejercicioLogs.services;
 
-import com.babelgroup.helloworld.ejercicioLogs.entities.Apuesta;
-import com.babelgroup.helloworld.ejercicioLogs.entities.Jugador;
-
-import java.util.List;
+import com.babelgroup.helloworld.ejercicioLogs.entities.IApuesta;
+import com.babelgroup.helloworld.ejercicioLogs.entities.IJugador;
 
 public interface JugadorService {
-    public Jugador crearJugador();
+    public void crearJugador();
 
-    public void añadirApuesta(Jugador jugador, Apuesta apuesta);
+    public void añadirApuesta(IJugador jugador, IApuesta apuesta);
 
     public void mostrarApuestas();
 
-    public List<Jugador> getAllJugadores();
+    //public List<Jugador> getAllJugadores();
 
-    public Jugador seleccionarJugador(String nombre);
+    public IJugador seleccionarJugador(String nombre);
 }

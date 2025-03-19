@@ -1,11 +1,8 @@
 package com.babelgroup.helloworld.ejercicioLogs.entities;
 
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
-public class Apuesta {
+public class Apuesta implements IApuesta {
 
     private List<Integer> apuestas;
 

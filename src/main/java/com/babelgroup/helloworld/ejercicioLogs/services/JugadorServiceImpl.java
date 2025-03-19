@@ -1,15 +1,17 @@
 package com.babelgroup.helloworld.ejercicioLogs.services;
 
-import com.babelgroup.helloworld.ejercicioLogs.entities.Apuesta;
+import com.babelgroup.helloworld.ejercicioLogs.entities.IApuesta;
+import com.babelgroup.helloworld.ejercicioLogs.entities.IJugador;
 import com.babelgroup.helloworld.ejercicioLogs.entities.Jugador;
 import com.babelgroup.helloworld.ejercicioLogs.entities.Sorteo;
 import com.babelgroup.helloworld.ejercicioLogs.iomanagers.IOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
 
-
+@Service
 public class JugadorServiceImpl implements JugadorService {
 
     private IOManager ioManager;
@@ -21,14 +23,14 @@ public class JugadorServiceImpl implements JugadorService {
         this.sorteo = sorteo;
     }
 
-    public Jugador crearJugador() {
+    public void crearJugador() {
         this.ioManager.write("Introduce el nombre del jugador: ");
         String nombre = this.ioManager.read();
         this.logger.info("Nuevo jugador creado: " + nombre);
-        return new Jugador(nombre);
+        sorteo.addJugador(new Jugador(nombre, new ArrayList<>()));
     }
 
-    public void añadirApuesta(Jugador jugador, Apuesta apuesta) {
+    public void añadirApuesta(IJugador jugador, IApuesta apuesta) {
         if (this.apuestaRepetida(jugador, apuesta)) {
             this.logger.warn("Apuesta repetida. No se ha añadido al jugador " + jugador.getNombre());
         } else {
@@ -37,26 +39,26 @@ public class JugadorServiceImpl implements JugadorService {
         }
     }
 
-    private boolean apuestaRepetida(Jugador jugador, Apuesta apuesta) {
+    private boolean apuestaRepetida(IJugador jugador, IApuesta apuesta) {
         return jugador.getApuestas().contains(apuesta);
     }
 
     public void mostrarApuestas() {
-        for (Jugador jugador : this.getAllJugadores()) {
+        for (IJugador jugador : sorteo.getJugadores()) {
             this.ioManager.write("Apuesta de " + jugador.getNombre() + ": ");
-            for (Apuesta apuesta : jugador.getApuestas()) {
+            for (IApuesta apuesta : jugador.getApuestas()) {
                 this.ioManager.write(apuesta.getApuestas().toString());
             }
             this.logger.info("Apuestas del jugador " + jugador.getNombre() + " mostradas");
         }
     }
 
-    public List<Jugador> getAllJugadores() {
+    /*public List<IJugador> getAllJugadores() {
         return this.sorteo.getJugadores();
-    }
+    }*/
 
-    public Jugador seleccionarJugador(String nombre) {
-        for (Jugador jugador : this.getAllJugadores()) {
+    public IJugador seleccionarJugador(String nombre) {
+        for (IJugador jugador : sorteo.getJugadores()) {
             if (jugador.getNombre().equals(nombre)) {
                 this.logger.info("Jugador " + jugador.getNombre() + " seleccionado");
                 return jugador;

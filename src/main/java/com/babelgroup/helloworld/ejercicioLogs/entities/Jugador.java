@@ -1,21 +1,19 @@
 package com.babelgroup.helloworld.ejercicioLogs.entities;
 
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
-public class Jugador {
+public class Jugador implements IJugador {
 
     String name;
-    List<Apuesta> apuestas;
+    List<IApuesta> apuestas;
 
-    public Jugador(String name, List<Apuesta> apuestas) {
+    public Jugador(String name, List<IApuesta> apuestas) {
         this.name = name;
         this.apuestas = apuestas;
     }
 
-    public void addApuesta(Apuesta apuestas) {
+    @Override
+    public void addApuesta(IApuesta apuestas) {
         this.apuestas.add(apuestas);
     }
 
@@ -23,7 +21,7 @@ public class Jugador {
         return this.name;
     }
 
-    public List<Apuesta> getApuestas() {
+    public List<IApuesta> getApuestas() {
         return apuestas;
     }
 }

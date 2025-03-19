@@ -1,7 +1,6 @@
 package com.babelgroup.helloworld.ejercicioLogs.services;
 
 import com.babelgroup.helloworld.ejercicioLogs.entities.Apuesta;
-import com.babelgroup.helloworld.ejercicioLogs.iomanagers.ConsoleIOManager;
 import com.babelgroup.helloworld.ejercicioLogs.iomanagers.IOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,8 @@ public class ApuestasServiceImpl implements ApuestasService {
     private IOManager ioManager;
     private static final Logger logger = LoggerFactory.getLogger(ApuestasServiceImpl.class);
 
-    public ApuestasServiceImpl() {
-        this.ioManager = new ConsoleIOManager();
+    public ApuestasServiceImpl(IOManager ioManager) {
+        this.ioManager = ioManager;
     }
 
     public Apuesta makeApuesta() {
@@ -27,7 +26,7 @@ public class ApuestasServiceImpl implements ApuestasService {
 
         this.ioManager.write("Introduce una nueva apuesta: ");
         for (int i = 0; i < 6; i++) {
-            this.ioManager.write("Valor " + i + 1 + ": ");
+            this.ioManager.write("Valor " + (i + 1) + ": ");
             numero = Integer.parseInt(this.ioManager.read());
 
             while (this.numRepetido(numero, apuestas)) {

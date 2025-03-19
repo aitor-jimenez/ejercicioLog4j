@@ -1,7 +1,8 @@
 package com.babelgroup.helloworld.ejercicioLogs.services;
 
 import com.babelgroup.helloworld.ejercicioLogs.entities.Apuesta;
-import com.babelgroup.helloworld.ejercicioLogs.entities.Jugador;
+import com.babelgroup.helloworld.ejercicioLogs.entities.IJugador;
+import com.babelgroup.helloworld.ejercicioLogs.entities.ISorteo;
 import com.babelgroup.helloworld.ejercicioLogs.iomanagers.IOManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,53 +20,64 @@ public class MenuServiceImpl implements MenuService {
     private final ApuestasService apuestaService;
     private final SorteoService sorteoService;
 
+    private final ISorteo sorteo;
+
     public MenuServiceImpl(IOManager ioManager,
                            JugadorService jugadorService,
-                           ApuestasService apuestaService, SorteoService sorteoService) {
+                           ApuestasService apuestaService, SorteoService sorteoService, ISorteo sorteo) {
         this.ioManager = ioManager;
         this.jugadorService = jugadorService;
         this.apuestaService = apuestaService;
         this.sorteoService = sorteoService;
+        this.sorteo = sorteo;
     }
 
     @Override
     public void runMenu() {
-        logger.info("Iniciando el menú de la Lotería Primitiva...");
-        boolean salir = false;
+        try {
+            logger.info("Iniciando el menú de la Lotería Primitiva...");
+            boolean salir = false;
 
-        while (!salir) {
-            buildMenu();
-            String opcion = ioManager.read();
-            logger.info("El usuario ha seleccionado la opción: {}", opcion);
+            while (!salir) {
+                buildMenu();
+                String opcion = ioManager.read();
+                logger.info("El usuario ha seleccionado la opción: {}", opcion);
 
-            switch (opcion) {
-                case "1" -> {
-                    logger.info("Ejecutando opción: Añadir (o crear) jugador");
-                    jugadorService.crearJugador();
-                }
-                case "2" -> {
-                    logger.info("Ejecutando opción: Añadir apuesta a un jugador");
-                    añadirApuestaAJugador();
-                }
-                case "3" -> {
-                    logger.info("Ejecutando opción: Mostrar apuestas de todos los jugadores");
-                    jugadorService.mostrarApuestas();
-                }
-                case "4" -> {
-                    logger.info("Ejecutando opción: Realizar sorteo");
-                }
-                case "5" -> {
-                    logger.info("El usuario ha decidido salir del programa.");
-                    ioManager.write("Saliendo...");
-                    salir = true;
-                }
-                default -> {
-                    logger.warn("Opción inválida ingresada en el menú principal: {}", opcion);
-                    ioManager.write("Opción no válida. Inténtalo de nuevo.");
+                switch (opcion) {
+                    case "1" -> {
+                        logger.info("Ejecutando opción: Añadir (o crear) jugador");
+                        jugadorService.crearJugador();
+                    }
+                    case "2" -> {
+                        logger.info("Ejecutando opción: Añadir apuesta a un jugador");
+                        añadirApuestaAJugador();
+                    }
+                    case "3" -> {
+                        logger.info("Ejecutando opción: Mostrar apuestas de todos los jugadores");
+                        jugadorService.mostrarApuestas();
+                    }
+                    case "4" -> {
+                        logger.info("Ejecutando opción: Realizar sorteo");
+                        sorteoService.makeSorteo();
+                    }
+                    case "5" -> {
+                        logger.info("El usuario ha decidido salir del programa.");
+                        ioManager.write("Saliendo...");
+                        salir = true;
+                    }
+                    default -> {
+                        logger.warn("Opción inválida ingresada en el menú principal: {}", opcion);
+                        ioManager.write("Opción no válida. Inténtalo de nuevo.");
+                    }
                 }
             }
+
+            logger.info("Finalizando el menú de la Lotería Primitiva.");
+        } catch (Exception e) {
+            logger.error("Error en el menú de la Lotería Primitiva: {}", e.getMessage());
         }
-        logger.info("Finalizando el menú de la Lotería Primitiva.");
+
+
     }
 
     private void buildMenu() {
@@ -79,7 +91,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private void añadirApuestaAJugador() {
-        List<Jugador> jugadores = jugadorService.getAllJugadores();
+        List<IJugador> jugadores = sorteo.getJugadores();
         if (jugadores.isEmpty()) {
             ioManager.write("No hay jugadores disponibles. Crea uno primero.");
             return;
@@ -90,7 +102,7 @@ public class MenuServiceImpl implements MenuService {
         ioManager.write("Introduce el nombre del jugador:");
         String nombreJugador = ioManager.read();
 
-        Jugador jugadorSeleccionado = jugadorService.seleccionarJugador(nombreJugador);
+        IJugador jugadorSeleccionado = jugadorService.seleccionarJugador(nombreJugador);
         if (jugadorSeleccionado == null) {
             ioManager.write("Jugador no seleccionado o no válido.");
             return;
@@ -110,7 +122,7 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    private void mostrarJugadores(List<Jugador> jugadores) {
+    private void mostrarJugadores(List<IJugador> jugadores) {
         ioManager.write("Jugadores disponibles:");
         for (int i = 0; i < jugadores.size(); i++) {
             ioManager.write((i + 1) + ") " + jugadores.get(i).getNombre());
