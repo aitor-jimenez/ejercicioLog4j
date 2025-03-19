@@ -3,6 +3,8 @@ package com.babelgroup.helloworld.ejercicioLogs.services;
 import com.babelgroup.helloworld.ejercicioLogs.entities.Apuesta;
 import com.babelgroup.helloworld.ejercicioLogs.iomanagers.ConsoleIOManager;
 import com.babelgroup.helloworld.ejercicioLogs.iomanagers.IOManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Random;
 public class ApuestasServiceImpl implements ApuestasService {
 
     private IOManager ioManager;
+    private static final Logger logger = LoggerFactory.getLogger(ApuestasServiceImpl.class);
 
     public ApuestasServiceImpl() {
         this.ioManager = new ConsoleIOManager();
@@ -35,6 +38,7 @@ public class ApuestasServiceImpl implements ApuestasService {
             apuestas.add(numero);
         }
 
+        this.logger.info("Nueva apuesta introducida manualmente");
         return new Apuesta(apuestas);
     }
 
@@ -53,6 +57,7 @@ public class ApuestasServiceImpl implements ApuestasService {
             apuestas.add(numero);
         }
 
+        this.logger.info("Nueva apuesta generada aleatoriamente");
         return new Apuesta(apuestas);
     }
 
